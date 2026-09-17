@@ -19,25 +19,60 @@ public class Main {
             opcao = Integer.parseInt(scanner.nextLine());
 
             switch (opcao) {
-                case 1:
-                    System.out.print("Digite a placa: ");
-                    String placa = scanner.nextLine();
+                case 1: {
+    System.out.print("Digite a placa: ");
+    String placa = scanner.nextLine()
+        .trim()
+        .toUpperCase();
 
-                    System.out.print("Digite o modelo: ");
-                    String modelo = scanner.nextLine();
+    boolean placaDuplicada = false;
 
-                    System.out.print("Digite a quilometragem: ");
-                    double quilometragem =
-                        Double.parseDouble(scanner.nextLine());
+    for (Veiculo veiculo : veiculos) {
+        if (veiculo.getPlaca().equalsIgnoreCase(placa)) {
+            placaDuplicada = true;
+            break;
+        }
+    }
 
-                    Veiculo novoVeiculo =
-                        new Veiculo(placa, modelo, quilometragem);
+    if (placaDuplicada) {
+        System.out.println(
+            "Já existe um veículo cadastrado com essa placa."
+        );
+        break;
+    }
 
-                    veiculos.add(novoVeiculo);
+    System.out.print("Digite o modelo: ");
+    String modelo = scanner.nextLine().trim();
 
-                    System.out.println("Veículo cadastrado com sucesso.");
-                    break;
+    System.out.print("Digite a quilometragem: ");
 
+    double quilometragem;
+
+    try {
+        quilometragem =
+            Double.parseDouble(scanner.nextLine());
+    } catch (NumberFormatException erro) {
+        System.out.println(
+            "Quilometragem inválida. Digite apenas números."
+        );
+        break;
+    }
+
+    if (quilometragem < 0) {
+        System.out.println(
+            "A quilometragem não pode ser negativa."
+        );
+        break;
+    }
+
+    Veiculo novoVeiculo =
+        new Veiculo(placa, modelo, quilometragem);
+
+    veiculos.add(novoVeiculo);
+
+    System.out.println("Veículo cadastrado com sucesso.");
+    break;
+}
                 case 2:
                     if (veiculos.isEmpty()) {
                         System.out.println("Nenhum veículo cadastrado.");

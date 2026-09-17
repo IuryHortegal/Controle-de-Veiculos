@@ -6,7 +6,13 @@ public class Veiculo {
     public Veiculo(String placa, String modelo, double quilometragem) {
         this.placa = placa;
         this.modelo = modelo;
-        this.quilometragem = quilometragem;
+       if (quilometragem < 0) {
+    throw new IllegalArgumentException(
+        "A quilometragem não pode ser negativa."
+    );
+}
+
+this.quilometragem = quilometragem;
     }
 
     public void atualizarQuilometragem(double novaQuilometragem) {
