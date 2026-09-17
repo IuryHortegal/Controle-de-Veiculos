@@ -1,4 +1,4 @@
-# Controle-de-Ve-culos.
+# Controle de Veículos
 
 Projeto desenvolvido em Java para praticar orientação a objetos.
 
