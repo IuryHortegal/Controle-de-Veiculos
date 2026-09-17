@@ -6,6 +6,11 @@ public class Main {
             45000
         );
 
+        System.out.println("Dados iniciais:");
+        veiculo.exibirDados();
+
+        System.out.println("\nApós atualização:");
+        veiculo.atualizarQuilometragem(52000);
         veiculo.exibirDados();
     }
 }
