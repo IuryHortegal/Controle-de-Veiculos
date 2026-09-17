@@ -9,12 +9,11 @@ public class Main {
         int opcao;
 
         do {
-            System.out.println("\nCONTROLE DE VEÍCULOS");
             System.out.println("1 - Cadastrar veículo");
             System.out.println("2 - Listar veículos");
             System.out.println("3 - Atualizar quilometragem");
-            System.out.println("4 - Sair");
-            System.out.print("Escolha uma opção: ");
+            System.out.println("4 - Remover veículo");
+            System.out.println("5 - Sair");
 
             try {
                 opcao = Integer.parseInt(scanner.nextLine());
@@ -162,17 +161,45 @@ public class Main {
                     break;
                 }
 
-                case 4:
+                case 4: {
+                        System.out.print(
+                            "Digite a placa do veículo que deseja remover: "
+              );
+
+                 String placaProcurada =
+                 scanner.nextLine().trim();
+
+                 boolean removido = false;
+
+    for (int i = 0; i < veiculos.size(); i++) {
+        Veiculo veiculo = veiculos.get(i);
+
+        if (veiculo.getPlaca()
+                .equalsIgnoreCase(placaProcurada)) {
+
+            veiculos.remove(i);
+            removido = true;
+
+            System.out.println(
+                "Veículo removido com sucesso."
+            );
+            break;
+        }
+    }
+
+    if (!removido) {
+        System.out.println("Veículo não encontrado.");
+    }
+
+    break;
+}
+
+                case 5:
                     System.out.println("Programa encerrado.");
                     break;
-
-                default:
-                    System.out.println(
-                        "Opção inválida. Digite um número de 1 a 4."
-                    );
             }
 
-        } while (opcao != 4);
+        } while (opcao != 5);
 
         scanner.close();
     }
