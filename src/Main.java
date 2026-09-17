@@ -16,113 +16,160 @@ public class Main {
             System.out.println("4 - Sair");
             System.out.print("Escolha uma opção: ");
 
-            opcao = Integer.parseInt(scanner.nextLine());
+            try {
+                opcao = Integer.parseInt(scanner.nextLine());
+            } catch (NumberFormatException erro) {
+                System.out.println(
+                    "Opção inválida. Digite um número de 1 a 4."
+                );
+                opcao = 0;
+                continue;
+            }
 
             switch (opcao) {
                 case 1: {
-    System.out.print("Digite a placa: ");
-    String placa = scanner.nextLine()
-        .trim()
-        .toUpperCase();
+                    System.out.print("Digite a placa: ");
+                    String placa = scanner.nextLine()
+                        .trim()
+                        .toUpperCase();
 
-    boolean placaDuplicada = false;
+                    boolean placaDuplicada = false;
 
-    for (Veiculo veiculo : veiculos) {
-        if (veiculo.getPlaca().equalsIgnoreCase(placa)) {
-            placaDuplicada = true;
-            break;
-        }
-    }
+                    for (Veiculo veiculo : veiculos) {
+                        if (veiculo.getPlaca()
+                                .equalsIgnoreCase(placa)) {
+                            placaDuplicada = true;
+                            break;
+                        }
+                    }
 
-    if (placaDuplicada) {
-        System.out.println(
-            "Já existe um veículo cadastrado com essa placa."
-        );
-        break;
-    }
+                    if (placaDuplicada) {
+                        System.out.println(
+                            "Já existe um veículo cadastrado com essa placa."
+                        );
+                        break;
+                    }
 
-    System.out.print("Digite o modelo: ");
-    String modelo = scanner.nextLine().trim();
+                    System.out.print("Digite o modelo: ");
+                    String modelo = scanner.nextLine().trim();
 
-    System.out.print("Digite a quilometragem: ");
+                    System.out.print("Digite a quilometragem: ");
 
-    double quilometragem;
+                    double quilometragem;
 
-    try {
-        quilometragem =
-            Double.parseDouble(scanner.nextLine());
-    } catch (NumberFormatException erro) {
-        System.out.println(
-            "Quilometragem inválida. Digite apenas números."
-        );
-        break;
-    }
+                    try {
+                        quilometragem = Double.parseDouble(
+                            scanner.nextLine()
+                        );
+                    } catch (NumberFormatException erro) {
+                        System.out.println(
+                            "Quilometragem inválida. Digite apenas números."
+                        );
+                        break;
+                    }
 
-    if (quilometragem < 0) {
-        System.out.println(
-            "A quilometragem não pode ser negativa."
-        );
-        break;
-    }
+                    if (quilometragem < 0) {
+                        System.out.println(
+                            "A quilometragem não pode ser negativa."
+                        );
+                        break;
+                    }
 
-    Veiculo novoVeiculo =
-        new Veiculo(placa, modelo, quilometragem);
+                    Veiculo novoVeiculo = new Veiculo(
+                        placa,
+                        modelo,
+                        quilometragem
+                    );
 
-    veiculos.add(novoVeiculo);
+                    veiculos.add(novoVeiculo);
 
-    System.out.println("Veículo cadastrado com sucesso.");
-    break;
-}
-                case 2:
+                    System.out.println(
+                        "Veículo cadastrado com sucesso."
+                    );
+                    break;
+                }
+
+                case 2: {
                     if (veiculos.isEmpty()) {
-                        System.out.println("Nenhum veículo cadastrado.");
+                        System.out.println(
+                            "Nenhum veículo cadastrado."
+                        );
                     } else {
-                        System.out.println("\nVEÍCULOS CADASTRADOS");
+                        System.out.println(
+                            "\nVEÍCULOS CADASTRADOS"
+                        );
 
                         for (Veiculo veiculo : veiculos) {
                             veiculo.exibirDados();
-                            System.out.println("--------------------");
+                            System.out.println(
+                                "--------------------"
+                            );
                         }
                     }
                     break;
+                }
 
-                case 3:
-                    System.out.print("Digite a placa do veículo: ");
-                    String placaProcurada = scanner.nextLine();
+                case 3: {
+                    System.out.print(
+                        "Digite a placa do veículo: "
+                    );
+
+                    String placaProcurada =
+                        scanner.nextLine().trim();
 
                     boolean encontrado = false;
 
                     for (Veiculo veiculo : veiculos) {
                         if (veiculo.getPlaca()
-                                .equalsIgnoreCase(placaProcurada)) {
+                                .equalsIgnoreCase(
+                                    placaProcurada
+                                )) {
+
+                            encontrado = true;
 
                             System.out.print(
                                 "Digite a nova quilometragem: "
                             );
 
-                            double novaQuilometragem =
-                                Double.parseDouble(scanner.nextLine());
+                            try {
+                                double novaQuilometragem =
+                                    Double.parseDouble(
+                                        scanner.nextLine()
+                                    );
 
-                            veiculo.atualizarQuilometragem(
-                                novaQuilometragem
-                            );
+                                veiculo.atualizarQuilometragem(
+                                    novaQuilometragem
+                                );
+                            } catch (
+                                NumberFormatException erro
+                            ) {
+                                System.out.println(
+                                    "Quilometragem inválida. " +
+                                    "Digite apenas números."
+                                );
+                            }
 
-                            encontrado = true;
                             break;
                         }
                     }
 
                     if (!encontrado) {
-                        System.out.println("Veículo não encontrado.");
+                        System.out.println(
+                            "Veículo não encontrado."
+                        );
                     }
+
                     break;
+                }
 
                 case 4:
                     System.out.println("Programa encerrado.");
                     break;
 
                 default:
-                    System.out.println("Opção inválida.");
+                    System.out.println(
+                        "Opção inválida. Digite um número de 1 a 4."
+                    );
             }
 
         } while (opcao != 4);
