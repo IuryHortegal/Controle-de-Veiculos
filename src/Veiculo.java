@@ -33,4 +33,7 @@ public class Veiculo {
             System.out.println("Status: manutenção em dia");
         }
     }
+    public String getPlaca() {
+    return placa;
+}
 }
