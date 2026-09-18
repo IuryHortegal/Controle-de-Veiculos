@@ -1,10 +1,16 @@
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
+    private static final Path ARQUIVO_VEICULOS =
+        Path.of("veiculos.txt");
 
     public static void main(String[] args) {
-        ArrayList<Veiculo> veiculos = new ArrayList<>();
+        ArrayList<Veiculo> veiculos =
+           carregarVeiculos();
         Scanner scanner = new Scanner(System.in);
 
         int opcao;
@@ -33,10 +39,8 @@ public class Main {
 
             switch (opcao) {
                 case 1: {
-                    cadastrarVeiculo(
-                        veiculos,
-                        scanner
-                    );
+                    cadastrarVeiculo(veiculos, scanner);
+                      salvarVeiculos(veiculos);
                     break;
                 }
 
@@ -47,19 +51,19 @@ public class Main {
 
                 case 3: {
                     atualizarQuilometragemDoVeiculo(
-                        veiculos,
-                        scanner
-                    );
-                    break;
-                }
+                  veiculos,
+                    scanner
+                );
+
+                salvarVeiculos(veiculos);
+                break;
+            }
 
                 case 4: {
-                    removerVeiculo(
-                        veiculos,
-                        scanner
-                    );
-                    break;
-                }
+                    removerVeiculo(veiculos, scanner);
+                    salvarVeiculos(veiculos);
+                break;
+            }
 
                 case 5: {
                     System.out.println(
@@ -264,4 +268,85 @@ public class Main {
 
         return null;
     }
+    private static void salvarVeiculos(
+        ArrayList<Veiculo> veiculos) {
+
+    ArrayList<String> linhas =
+        new ArrayList<>();
+
+    for (Veiculo veiculo : veiculos) {
+        String linha =
+            veiculo.getPlaca() + ";" +
+            veiculo.getModelo() + ";" +
+            veiculo.getQuilometragem();
+
+        linhas.add(linha);
+    }
+
+    try {
+        Files.write(
+            ARQUIVO_VEICULOS,
+            linhas
+        );
+    } catch (IOException erro) {
+        System.out.println(
+            "Não foi possível salvar os veículos."
+        );
+    }
+}
+       private static ArrayList<Veiculo> carregarVeiculos() {
+    ArrayList<Veiculo> veiculos =
+        new ArrayList<>();
+
+    if (!Files.exists(ARQUIVO_VEICULOS)) {
+        return veiculos;
+    }
+
+    try {
+        ArrayList<String> linhas =
+            new ArrayList<>(
+                Files.readAllLines(
+                    ARQUIVO_VEICULOS
+                )
+            );
+
+        for (String linha : linhas) {
+            String[] dados =
+                linha.split(";", 3);
+
+            if (dados.length != 3) {
+                continue;
+            }
+
+            try {
+                String placa = dados[0];
+                String modelo = dados[1];
+
+                double quilometragem =
+                    Double.parseDouble(
+                        dados[2]
+                    );
+
+                Veiculo veiculo =
+                    new Veiculo(
+                        placa,
+                        modelo,
+                        quilometragem
+                    );
+
+                veiculos.add(veiculo);
+            } catch (IllegalArgumentException erro) {
+                System.out.println(
+                    "Um registro inválido foi ignorado."
+                );
+            }
+        }
+    } catch (IOException erro) {
+        System.out.println(
+            "Não foi possível carregar os veículos."
+        );
+    }
+
+    return veiculos;
+}
 }

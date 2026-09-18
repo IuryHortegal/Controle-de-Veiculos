@@ -3,24 +3,35 @@ public class Veiculo {
     private String modelo;
     private double quilometragem;
 
-    public Veiculo(String placa, String modelo, double quilometragem) {
+    public Veiculo(
+            String placa,
+            String modelo,
+            double quilometragem) {
+
+        if (quilometragem < 0) {
+            throw new IllegalArgumentException(
+                "A quilometragem não pode ser negativa."
+            );
+        }
+
         this.placa = placa;
         this.modelo = modelo;
-       if (quilometragem < 0) {
-    throw new IllegalArgumentException(
-        "A quilometragem não pode ser negativa."
-    );
-}
-
-this.quilometragem = quilometragem;
+        this.quilometragem = quilometragem;
     }
 
-    public void atualizarQuilometragem(double novaQuilometragem) {
+    public void atualizarQuilometragem(
+            double novaQuilometragem) {
+
         if (novaQuilometragem >= quilometragem) {
             quilometragem = novaQuilometragem;
-            System.out.println("Quilometragem atualizada com sucesso.");
+
+            System.out.println(
+                "Quilometragem atualizada com sucesso."
+            );
         } else {
-            System.out.println("A nova quilometragem não pode ser menor que a atual.");
+            System.out.println(
+                "A nova quilometragem não pode ser menor que a atual."
+            );
         }
     }
 
@@ -31,15 +42,30 @@ this.quilometragem = quilometragem;
     public void exibirDados() {
         System.out.println("Placa: " + placa);
         System.out.println("Modelo: " + modelo);
-        System.out.println("Quilometragem: " + quilometragem + " km");
+        System.out.println(
+            "Quilometragem: " + quilometragem + " km"
+        );
 
         if (precisaDeManutencao()) {
-            System.out.println("Status: manutenção necessária");
+            System.out.println(
+                "Status: manutenção necessária"
+            );
         } else {
-            System.out.println("Status: manutenção em dia");
+            System.out.println(
+                "Status: manutenção em dia"
+            );
         }
     }
+
     public String getPlaca() {
-    return placa;
-}
+        return placa;
+    }
+
+    public String getModelo() {
+        return modelo;
+    }
+
+    public double getQuilometragem() {
+        return quilometragem;
+    }
 }
