@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
+
     public static void main(String[] args) {
         ArrayList<Veiculo> veiculos = new ArrayList<>();
         Scanner scanner = new Scanner(System.in);
@@ -25,172 +26,38 @@ public class Main {
                 System.out.println(
                     "Opção inválida. Digite um número de 1 a 5."
                 );
+
                 opcao = 0;
                 continue;
             }
 
             switch (opcao) {
                 case 1: {
-                    System.out.print("Digite a placa: ");
-
-                    String placa = scanner.nextLine()
-                        .trim()
-                        .toUpperCase();
-
-                    Veiculo veiculoExistente =
-                        buscarVeiculoPorPlaca(
-                            veiculos,
-                            placa
-                        );
-
-                    if (veiculoExistente != null) {
-                        System.out.println(
-                            "Já existe um veículo cadastrado " +
-                            "com essa placa."
-                        );
-                        break;
-                    }
-
-                    System.out.print("Digite o modelo: ");
-                    String modelo =
-                        scanner.nextLine().trim();
-
-                    System.out.print(
-                        "Digite a quilometragem: "
+                    cadastrarVeiculo(
+                        veiculos,
+                        scanner
                     );
-
-                    double quilometragem;
-
-                    try {
-                        quilometragem =
-                            Double.parseDouble(
-                                scanner.nextLine()
-                            );
-                    } catch (NumberFormatException erro) {
-                        System.out.println(
-                            "Quilometragem inválida. " +
-                            "Digite apenas números."
-                        );
-                        break;
-                    }
-
-                    if (quilometragem < 0) {
-                        System.out.println(
-                            "A quilometragem não pode ser negativa."
-                        );
-                        break;
-                    }
-
-                    Veiculo novoVeiculo = new Veiculo(
-                        placa,
-                        modelo,
-                        quilometragem
-                    );
-
-                    veiculos.add(novoVeiculo);
-
-                    System.out.println(
-                        "Veículo cadastrado com sucesso."
-                    );
-
                     break;
                 }
 
                 case 2: {
-                    if (veiculos.isEmpty()) {
-                        System.out.println(
-                            "Nenhum veículo cadastrado."
-                        );
-                    } else {
-                        System.out.println(
-                            "\nVEÍCULOS CADASTRADOS"
-                        );
-
-                        for (Veiculo veiculo : veiculos) {
-                            veiculo.exibirDados();
-
-                            System.out.println(
-                                "--------------------"
-                            );
-                        }
-                    }
-
+                    listarVeiculos(veiculos);
                     break;
                 }
 
                 case 3: {
-                    System.out.print(
-                        "Digite a placa do veículo: "
+                    atualizarQuilometragemDoVeiculo(
+                        veiculos,
+                        scanner
                     );
-
-                    String placaProcurada =
-                        scanner.nextLine().trim();
-
-                    Veiculo veiculoEncontrado =
-                        buscarVeiculoPorPlaca(
-                            veiculos,
-                            placaProcurada
-                        );
-
-                    if (veiculoEncontrado == null) {
-                        System.out.println(
-                            "Veículo não encontrado."
-                        );
-                        break;
-                    }
-
-                    System.out.print(
-                        "Digite a nova quilometragem: "
-                    );
-
-                    try {
-                        double novaQuilometragem =
-                            Double.parseDouble(
-                                scanner.nextLine()
-                            );
-
-                        veiculoEncontrado
-                            .atualizarQuilometragem(
-                                novaQuilometragem
-                            );
-                    } catch (NumberFormatException erro) {
-                        System.out.println(
-                            "Quilometragem inválida. " +
-                            "Digite apenas números."
-                        );
-                    }
-
                     break;
                 }
 
                 case 4: {
-                    System.out.print(
-                        "Digite a placa do veículo " +
-                        "que deseja remover: "
+                    removerVeiculo(
+                        veiculos,
+                        scanner
                     );
-
-                    String placaProcurada =
-                        scanner.nextLine().trim();
-
-                    Veiculo veiculoEncontrado =
-                        buscarVeiculoPorPlaca(
-                            veiculos,
-                            placaProcurada
-                        );
-
-                    if (veiculoEncontrado == null) {
-                        System.out.println(
-                            "Veículo não encontrado."
-                        );
-                        break;
-                    }
-
-                    veiculos.remove(veiculoEncontrado);
-
-                    System.out.println(
-                        "Veículo removido com sucesso."
-                    );
-
                     break;
                 }
 
@@ -203,7 +70,8 @@ public class Main {
 
                 default: {
                     System.out.println(
-                        "Opção inválida. Digite um número de 1 a 5."
+                        "Opção inválida. " +
+                        "Digite um número de 1 a 5."
                     );
                 }
             }
@@ -211,6 +79,176 @@ public class Main {
         } while (opcao != 5);
 
         scanner.close();
+    }
+
+    private static void cadastrarVeiculo(
+            ArrayList<Veiculo> veiculos,
+            Scanner scanner) {
+
+        System.out.print("Digite a placa: ");
+
+        String placa = scanner.nextLine()
+            .trim()
+            .toUpperCase();
+
+        Veiculo veiculoExistente =
+            buscarVeiculoPorPlaca(
+                veiculos,
+                placa
+            );
+
+        if (veiculoExistente != null) {
+            System.out.println(
+                "Já existe um veículo cadastrado " +
+                "com essa placa."
+            );
+            return;
+        }
+
+        System.out.print("Digite o modelo: ");
+
+        String modelo =
+            scanner.nextLine().trim();
+
+        System.out.print(
+            "Digite a quilometragem: "
+        );
+
+        double quilometragem;
+
+        try {
+            quilometragem =
+                Double.parseDouble(
+                    scanner.nextLine()
+                );
+        } catch (NumberFormatException erro) {
+            System.out.println(
+                "Quilometragem inválida. " +
+                "Digite apenas números."
+            );
+            return;
+        }
+
+        if (quilometragem < 0) {
+            System.out.println(
+                "A quilometragem não pode ser negativa."
+            );
+            return;
+        }
+
+        Veiculo novoVeiculo = new Veiculo(
+            placa,
+            modelo,
+            quilometragem
+        );
+
+        veiculos.add(novoVeiculo);
+
+        System.out.println(
+            "Veículo cadastrado com sucesso."
+        );
+    }
+
+    private static void listarVeiculos(
+            ArrayList<Veiculo> veiculos) {
+
+        if (veiculos.isEmpty()) {
+            System.out.println(
+                "Nenhum veículo cadastrado."
+            );
+            return;
+        }
+
+        System.out.println(
+            "\nVEÍCULOS CADASTRADOS"
+        );
+
+        for (Veiculo veiculo : veiculos) {
+            veiculo.exibirDados();
+
+            System.out.println(
+                "--------------------"
+            );
+        }
+    }
+
+    private static void atualizarQuilometragemDoVeiculo(
+            ArrayList<Veiculo> veiculos,
+            Scanner scanner) {
+
+        System.out.print(
+            "Digite a placa do veículo: "
+        );
+
+        String placaProcurada =
+            scanner.nextLine().trim();
+
+        Veiculo veiculoEncontrado =
+            buscarVeiculoPorPlaca(
+                veiculos,
+                placaProcurada
+            );
+
+        if (veiculoEncontrado == null) {
+            System.out.println(
+                "Veículo não encontrado."
+            );
+            return;
+        }
+
+        System.out.print(
+            "Digite a nova quilometragem: "
+        );
+
+        try {
+            double novaQuilometragem =
+                Double.parseDouble(
+                    scanner.nextLine()
+                );
+
+            veiculoEncontrado
+                .atualizarQuilometragem(
+                    novaQuilometragem
+                );
+
+        } catch (NumberFormatException erro) {
+            System.out.println(
+                "Quilometragem inválida. " +
+                "Digite apenas números."
+            );
+        }
+    }
+
+    private static void removerVeiculo(
+            ArrayList<Veiculo> veiculos,
+            Scanner scanner) {
+
+        System.out.print(
+            "Digite a placa do veículo " +
+            "que deseja remover: "
+        );
+
+        String placaProcurada =
+            scanner.nextLine().trim();
+
+        Veiculo veiculoEncontrado =
+            buscarVeiculoPorPlaca(
+                veiculos,
+                placaProcurada
+            );
+
+        if (veiculoEncontrado == null) {
+            System.out.println(
+                "Veículo não encontrado."
+            );
+            return;
+        }
+
+        veiculos.remove(veiculoEncontrado);
+
+        System.out.println(
+            "Veículo removido com sucesso."
+        );
     }
 
     private static Veiculo buscarVeiculoPorPlaca(
